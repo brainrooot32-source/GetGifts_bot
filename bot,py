@@ -1,0 +1,37 @@
+import asyncio
+import logging
+from aiogram import Bot, Dispatcher, types
+from aiogram.filters import Command
+from aiogram.types import WebAppInfo, InlineKeyboardMarkup, InlineKeyboardButton
+
+# Токен вашего бота от @BotFather
+BOT_TOKEN = "7648969110:AAFe7y9aqz3KnEKIc6kJTaX_W6xkRNi_AQA"
+
+# Ссылка на ваше Mini App на GitHub Pages
+WEBAPP_URL = "https://brainrooot32-source.github.io/GetGifts_bot/"
+
+# Настройка логов, чтобы видеть работу бота в терминале
+logging.basicConfig(level=logging.INFO)
+
+bot = Bot(token=BOT_TOKEN)
+dp = Dispatcher()
+
+@dp.message(Command("start"))
+async def start_command(message: types.Message):
+    # Создаем красивую кнопку для открытия мини-приложения
+    markup = InlineKeyboardMarkup(inline_keyboard=[
+        [InlineKeyboardButton(text="🎁 Открыть Кейсы", web_app=WebAppInfo(url=WEBAPP_URL))]
+    ])
+    
+    await message.answer(
+        f"Привет, {message.from_user.first_name}! 👋\n\n"
+        "Добро пожаловать в сервис подарков. Нажми на кнопку ниже, чтобы открыть наше мини-приложение и испытать удачу!",
+        reply_markup=markup
+    )
+
+async def main():
+    print("Бот успешно запущен и готов к работе!")
+    await dp.start_polling(bot)
+
+if __name__ == "__main__":
+    asyncio.run(main())
